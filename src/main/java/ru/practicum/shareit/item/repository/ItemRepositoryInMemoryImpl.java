@@ -18,7 +18,8 @@ public class ItemRepositoryInMemoryImpl implements ItemRepository {
 
     private final UserRepository userRepository;
     private final Map<Long, List<Item>> items = new HashMap<>();
-    private int itemId = 0;
+    private final Map<Long, Item> itemsStorage = new HashMap<>();
+    private long itemId = 0;
 
 
     @Override
@@ -33,8 +34,8 @@ public class ItemRepositoryInMemoryImpl implements ItemRepository {
             return userItems;
         });
         log.debug("Adding item: {}", item);
-        int index = findItemIndexInList(itemId, userId);
-        return items.get(userId).get(index);
+        itemsStorage.put(item.getId(), item);
+        return item;
     }
 
     @Override
@@ -43,20 +44,14 @@ public class ItemRepositoryInMemoryImpl implements ItemRepository {
         if (userId != item.getOwner().getId()) {
             throw new EntityNotFoundException("Owner id is incorrect!");
         }
-
-        int index = findItemIndexInList(itemId, userId);
-        items.get(userId).set(index, item);
-        return items.get(userId).get(index);
+        itemsStorage.put(item.getId(), item);
+        return item;
     }
 
     @Override
     public Item getItemById(long itemId) {
         log.debug("Getting item by id: {} ", itemId);
-        Item item = null;
-        for (long userId : items.keySet()) {
-            item = items.get(userId).stream().filter(x -> x.getId() == itemId).findFirst().orElse(null);
-        }
-        return item;
+        return itemsStorage.get(itemId);
     }
 
     @Override
@@ -70,7 +65,8 @@ public class ItemRepositoryInMemoryImpl implements ItemRepository {
         for (long userId : items.keySet()) {
             availableItems.addAll(items.get(userId).stream()
                     .filter(x -> x.getAvailable().equals(true))
-                    .filter(x -> x.getDescription().toLowerCase().contains(text))
+                    .filter(x -> x.getName().toLowerCase().contains(text) ||
+                            x.getDescription().toLowerCase().contains(text))
                     .collect(Collectors.toList()));
         }
         return availableItems;

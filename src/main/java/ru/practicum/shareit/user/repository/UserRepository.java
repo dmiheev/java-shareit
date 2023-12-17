@@ -10,9 +10,12 @@ public interface UserRepository {
 
     User getById(long id);
 
+    User getByEmail(String email);
+
     Collection<User> getAll();
 
     User update(User user);
 
     void delete(long id);
+
 }

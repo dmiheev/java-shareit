@@ -8,15 +8,16 @@ import ru.practicum.shareit.exception.EntityNotFoundException;
 import ru.practicum.shareit.exception.GatewayHeaderException;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.mapper.ItemMapper;
+import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.repository.ItemRepository;
-import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.service.UserService;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-import static ru.practicum.shareit.item.dto.mapper.ItemMapper.*;
+import static ru.practicum.shareit.item.dto.mapper.ItemMapper.toItem;
+import static ru.practicum.shareit.item.dto.mapper.ItemMapper.toItemDto;
 
 @Service
 @Slf4j
@@ -42,17 +43,21 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public ItemDto update(ItemDto itemDto, long userId) {
         checkingUserId(userId);
-        checkingItemId(itemDto.getId());
-        log.debug("Updating item element : {}; for user {}", itemDto, userId);
-        return toItemDto(itemRepository.update(toItemUpdate(itemDto, itemRepository
-                .getItemById(itemDto.getId())), userId));
+        checkingItemId(itemDto.getId(), userId);
+        log.debug("Updating item element: {}; for user {}", itemDto, userId);
+
+        Item item = itemRepository.getItemById(itemDto.getId());
+        item.setAvailable(itemDto.getAvailable() == null ? item.getAvailable() : itemDto.getAvailable());
+        item.setDescription(itemDto.getDescription() == null || itemDto.getDescription().isBlank() ? item.getDescription() : itemDto.getDescription());
+        item.setName(itemDto.getName() == null || itemDto.getName().isBlank() ? item.getName() : itemDto.getName());
+
+        return toItemDto(itemRepository.update(item, userId));
     }
 
     @Override
     public ItemDto getItemById(long itemId, long userId) {
         checkingUserId(userId);
-        checkingItemId(itemId);
-        log.debug("Getting item element by id : {}; for user {}", itemId, userId);
+        log.debug("Getting item element by id: {}; for user {}", itemId, userId);
         return toItemDto(itemRepository.getItemById(itemId));
     }
 
@@ -80,14 +85,17 @@ public class ItemServiceImpl implements ItemService {
         if (userId == -1) {
             throw new GatewayHeaderException("There is no user with header-Id : " + userId);
         }
-        if (userService.getAll().stream().map(UserDto::getId).noneMatch(x -> x.equals(userId))) {
+        if (userService.getById(userId) == null) {
             throw new EntityNotFoundException("There is no user with Id : " + userId);
         }
     }
 
-    private void checkingItemId(long itemId) {
+    private void checkingItemId(long itemId, long userId) {
         if (itemRepository.getItemById(itemId) == null) {
             throw new EntityNotFoundException("There is no Item with Id: " + itemId);
+        }
+        if (itemRepository.getItemsByUserId(userId) == null || !itemRepository.getItemsByUserId(userId).contains(itemRepository.getItemById(itemId))) {
+            throw new EntityNotFoundException("The user with Id = " + userId + " does not own the item with Id = " + itemId);
         }
     }
 }
