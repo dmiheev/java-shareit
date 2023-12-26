@@ -9,7 +9,7 @@ import ru.practicum.shareit.exception.EntityNotFoundException;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.dto.mapper.UserMapper;
 import ru.practicum.shareit.user.model.User;
-import ru.practicum.shareit.user.repository.UserRepository;
+import ru.practicum.shareit.user.repository.inmemory.UserRepository;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -20,7 +20,7 @@ import static ru.practicum.shareit.user.dto.mapper.UserMapper.toUserDto;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService {
+public class UserServiceInMemoryImpl implements UserService {
 
     private final UserRepository userRepository;
 
@@ -29,19 +29,19 @@ public class UserServiceImpl implements UserService {
         if (userDto.getEmail() == null) {
             throw new EmptyFieldException("Email is empty");
         }
-        log.debug("Creating user: {}", userDto);
+        log.info("Creating user: {}", userDto);
         return toUserDto(userRepository.create(toUser(userDto)));
     }
 
     @Override
     public UserDto getById(long id) {
-        log.debug("Getting user by Id: {}", id);
+        log.info("Getting user by Id: {}", id);
         return toUserDto(checkingId(id));
     }
 
     @Override
     public Collection<UserDto> getAll() {
-        log.debug("Getting all users");
+        log.info("Getting all users");
         return userRepository.getAll().stream()
                 .map(UserMapper::toUserDto)
                 .collect(Collectors.toList());
@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
     public UserDto update(UserDto userDto) {
         checkingId(userDto.getId());
         checkingUser(toUser(userDto));
-        log.debug("Updating user: {}", userDto);
+        log.info("Updating user: {}", userDto);
 
         User user = userRepository.getById(userDto.getId());
         userDto.setName(userDto.getName() != null ? userDto.getName() : user.getName());
@@ -63,7 +63,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void delete(long id) {
         checkingId(id);
-        log.debug("Deleting user by id: {}", id);
+        log.info("Deleting user by id: {}", id);
         userRepository.delete(id);
     }
 

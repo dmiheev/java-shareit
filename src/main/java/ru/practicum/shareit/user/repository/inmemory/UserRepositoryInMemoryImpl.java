@@ -1,4 +1,4 @@
-package ru.practicum.shareit.user.repository;
+package ru.practicum.shareit.user.repository.inmemory;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -24,7 +24,7 @@ public class UserRepositoryInMemoryImpl implements UserRepository {
         if (uniqueEmailsSet.containsKey(user.getEmail())) {
             throw new EmailAlreadyRegisteredException("User with this email is already exists!");
         }
-        log.debug("Creating user: {}", user);
+        log.info("Creating user: {}", user);
         user.setId(++userId);
 
         users.put(user.getId(), user);
@@ -34,19 +34,19 @@ public class UserRepositoryInMemoryImpl implements UserRepository {
 
     @Override
     public User getById(long id) {
-        log.debug("Getting User by ID: {}", id);
+        log.info("Getting User by ID: {}", id);
         return users.get(id);
     }
 
     @Override
     public User getByEmail(String email) {
-        log.debug("Getting User by Email: {}", email);
+        log.info("Getting User by Email: {}", email);
         return uniqueEmailsSet.get(email);
     }
 
     @Override
     public Collection<User> getAll() {
-        log.debug("Getting all users");
+        log.info("Getting all users");
         return new ArrayList<>(users.values());
     }
 
@@ -61,7 +61,7 @@ public class UserRepositoryInMemoryImpl implements UserRepository {
             }
         }
         String currEmail = users.get(user.getId()).getEmail();
-        log.debug("Updating user with id: {}, user: {}", user.getId(), user);
+        log.info("Updating user with id: {}, user: {}", user.getId(), user);
         uniqueEmailsSet.remove(currEmail);
         users.put(user.getId(), user);
         uniqueEmailsSet.put(user.getEmail(), user);
@@ -70,7 +70,7 @@ public class UserRepositoryInMemoryImpl implements UserRepository {
 
     @Override
     public void delete(long id) {
-        log.debug("Removing User with id: {}", id);
+        log.info("Removing User with id: {}", id);
         uniqueEmailsSet.remove(users.get(id).getEmail());
         users.remove(id);
     }
