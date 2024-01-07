@@ -51,7 +51,7 @@ public class Booking {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Booking booking = (Booking) o;
-        return id == booking.id;
+        return Objects.equals(id, booking.id);
     }
 
     @Override

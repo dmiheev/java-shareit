@@ -12,6 +12,7 @@ import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.repository.inmemory.UserRepository;
 
 import java.util.Collection;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static ru.practicum.shareit.user.dto.mapper.UserMapper.toUser;
@@ -77,7 +78,7 @@ public class UserServiceInMemoryImpl implements UserService {
 
     private void checkingUser(User user) {
         User userByEmail = userRepository.getByEmail(user.getEmail());
-        if (userByEmail != null && user.getId() != userByEmail.getId()) {
+        if (userByEmail != null && !Objects.equals(user.getId(), userByEmail.getId())) {
             throw new EmailAlreadyRegisteredException("Email registered to other User");
         }
     }
