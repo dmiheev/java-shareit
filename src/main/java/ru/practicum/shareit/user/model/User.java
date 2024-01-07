@@ -1,6 +1,7 @@
 package ru.practicum.shareit.user.model;
 
 import lombok.*;
+import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.item.model.Item;
 
 import javax.persistence.*;
@@ -24,14 +25,8 @@ public class User {
     private String email;
     @OneToMany(mappedBy = "owner")
     List<Item> items;
-
-    /**
-     * TODO
-     * import ru.practicum.shareit.booking.model.Booking;
-     *
-     * //@OneToMany(mappedBy = "booker", cascade = CascadeType.ALL)
-     * private List<Booking> bookings;
-     */
+    @OneToMany(mappedBy = "booker", cascade = CascadeType.ALL)
+    private List<Booking> bookings;
 
     @Override
     public boolean equals(Object o) {

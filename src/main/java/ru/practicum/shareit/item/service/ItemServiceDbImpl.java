@@ -2,15 +2,17 @@ package ru.practicum.shareit.item.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.booking.dto.BookingDto;
+import ru.practicum.shareit.booking.dto.mapper.BookingMapper;
+import ru.practicum.shareit.booking.repository.BookingRepository;
 import ru.practicum.shareit.exception.EmptyFieldException;
 import ru.practicum.shareit.exception.EntityNotFoundException;
-
 import ru.practicum.shareit.exception.IncorrectDataException;
-import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.CommentDto;
+import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.mapper.CommentMapper;
 import ru.practicum.shareit.item.dto.mapper.ItemMapper;
 import ru.practicum.shareit.item.model.Item;
@@ -25,23 +27,18 @@ import java.util.stream.Collectors;
 
 import static ru.practicum.shareit.item.dto.mapper.CommentMapper.toCommentDto;
 import static ru.practicum.shareit.item.dto.mapper.ItemMapper.*;
-import static ru.practicum.shareit.item.dto.mapper.ItemMapper.toItemDto;
 import static ru.practicum.shareit.user.dto.mapper.UserMapper.toUser;
 import static ru.practicum.shareit.user.dto.mapper.UserMapper.toUserDto;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Primary
 public class ItemServiceDbImpl implements ItemService {
 
     private final UserRepository userRepository;
     private final ItemRepository itemRepository;
-    /** todo
-     * import ru.practicum.shareit.booking.dto.mapper.BookingMapper;
-     * import ru.practicum.shareit.booking.repository.BookingRepository;
-     *
     private final BookingRepository bookingRepository;
-     */
     private final CommentRepository commentRepository;
 
 
