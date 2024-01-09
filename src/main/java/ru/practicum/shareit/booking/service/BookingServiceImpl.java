@@ -24,8 +24,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static ru.practicum.shareit.booking.dto.mapper.BookingMapper.*;
-import static ru.practicum.shareit.user.dto.mapper.UserMapper.toUser;
-import static ru.practicum.shareit.user.dto.mapper.UserMapper.toUserDto;
+import static ru.practicum.shareit.user.dto.mapper.UserMapper.*;
 
 @Service
 @RequiredArgsConstructor
@@ -105,35 +104,38 @@ public class BookingServiceImpl implements BookingService {
         checkingUserId(userId);
         checkingBookingState(state);
         List<Booking> bookings;
-        switch (state.toUpperCase()) {
-            case "WAITING": {
-                bookings = new ArrayList<>(bookingRepository.findAllByBookerIdAndWaitingStatus(userId, BookingStatus.WAITING, SORT_BY_START_DESC));
+
+        BookingState bookingState = BookingState.getEnumValue(state.toUpperCase());
+
+        switch (bookingState) {
+            case WAITING: {
+                bookings = bookingRepository.findAllByBookerIdAndWaitingStatus(userId, BookingStatus.WAITING, SORT_BY_START_DESC);
                 break;
             }
-            case "REJECTED": {
-                bookings = new ArrayList<>(bookingRepository.findAllByBookerIdAndRejectedStatus(userId, List.of(BookingStatus.REJECTED, BookingStatus.CANCELED), SORT_BY_START_DESC));
+            case REJECTED: {
+                bookings = bookingRepository.findAllByBookerIdAndRejectedStatus(userId, List.of(BookingStatus.REJECTED, BookingStatus.CANCELED), SORT_BY_START_DESC);
                 break;
             }
-            case "CURRENT": {
-                bookings = new ArrayList<>(bookingRepository.findAllByBookerIdAndCurrentStatus(userId, LocalDateTime.now(), SORT_BY_START_DESC));
+            case CURRENT: {
+                bookings = bookingRepository.findAllByBookerIdAndCurrentStatus(userId, LocalDateTime.now(), SORT_BY_START_DESC);
                 break;
             }
-            case "FUTURE": {
-                bookings = new ArrayList<>(bookingRepository.findAllByBookerIdAndFutureStatus(userId, LocalDateTime.now(), SORT_BY_START_DESC));
+            case FUTURE: {
+                bookings = bookingRepository.findAllByBookerIdAndFutureStatus(userId, LocalDateTime.now(), SORT_BY_START_DESC);
                 break;
             }
-            case "PAST": {
-                bookings = new ArrayList<>(bookingRepository.findAllByBookerIdAndPastStatus(userId, LocalDateTime.now(), SORT_BY_START_DESC));
+            case PAST: {
+                bookings = bookingRepository.findAllByBookerIdAndPastStatus(userId, LocalDateTime.now(), SORT_BY_START_DESC);
                 break;
             }
-            case "ALL": {
-                bookings = new ArrayList<>(bookingRepository.findAllByBooker_Id(userId, SORT_BY_START_DESC));
+            case ALL: {
+                bookings = bookingRepository.findAllByBooker_Id(userId, SORT_BY_START_DESC);
                 break;
             }
             default:
                 bookings = new ArrayList<>();
         }
-        return bookings.stream().map(BookingMapper::toBookingDto).collect(Collectors.toList());
+        return new ArrayList<>(bookings).stream().map(BookingMapper::toBookingDto).collect(Collectors.toList());
     }
 
     @Override
@@ -147,35 +149,38 @@ public class BookingServiceImpl implements BookingService {
             throw new IncorrectDataException("This method only for users who have >1 items");
         }
         List<Booking> bookings;
-        switch (state.toUpperCase()) {
-            case "WAITING": {
-                bookings = new ArrayList<>(bookingRepository.findAllByOwnerItemsAndWaitingStatus(userItemsIds, BookingStatus.WAITING, SORT_BY_START_DESC));
+
+        BookingState bookingState = BookingState.getEnumValue(state.toUpperCase());
+
+        switch (bookingState) {
+            case WAITING: {
+                bookings = bookingRepository.findAllByOwnerItemsAndWaitingStatus(userItemsIds, BookingStatus.WAITING, SORT_BY_START_DESC);
                 break;
             }
-            case "REJECTED": {
-                bookings = new ArrayList<>(bookingRepository.findAllByOwnerItemsAndRejectedStatus(userItemsIds, List.of(BookingStatus.REJECTED, BookingStatus.CANCELED), SORT_BY_START_DESC));
+            case REJECTED: {
+                bookings = bookingRepository.findAllByOwnerItemsAndRejectedStatus(userItemsIds, List.of(BookingStatus.REJECTED, BookingStatus.CANCELED), SORT_BY_START_DESC);
                 break;
             }
-            case "CURRENT": {
-                bookings = new ArrayList<>(bookingRepository.findAllByOwnerItemsAndCurrentStatus(userItemsIds, LocalDateTime.now(), SORT_BY_START_DESC));
+            case CURRENT: {
+                bookings = bookingRepository.findAllByOwnerItemsAndCurrentStatus(userItemsIds, LocalDateTime.now(), SORT_BY_START_DESC);
                 break;
             }
-            case "FUTURE": {
-                bookings = new ArrayList<>(bookingRepository.findAllByOwnerItemsAndFutureStatus(userItemsIds, LocalDateTime.now(), SORT_BY_START_DESC));
+            case FUTURE: {
+                bookings = bookingRepository.findAllByOwnerItemsAndFutureStatus(userItemsIds, LocalDateTime.now(), SORT_BY_START_DESC);
                 break;
             }
-            case "PAST": {
-                bookings = new ArrayList<>(bookingRepository.findAllByOwnerItemsAndPastStatus(userItemsIds, LocalDateTime.now(), SORT_BY_START_DESC));
+            case PAST: {
+                bookings = bookingRepository.findAllByOwnerItemsAndPastStatus(userItemsIds, LocalDateTime.now(), SORT_BY_START_DESC);
                 break;
             }
-            case "ALL": {
-                bookings = new ArrayList<>(bookingRepository.findAllByOwnerItems(userItemsIds, SORT_BY_START_DESC));
+            case ALL: {
+                bookings = bookingRepository.findAllByOwnerItems(userItemsIds, SORT_BY_START_DESC);
                 break;
             }
             default:
                 bookings = new ArrayList<>();
         }
-        return bookings.stream().map(BookingMapper::toBookingDto).collect(Collectors.toList());
+        return new ArrayList<>(bookings).stream().map(BookingMapper::toBookingDto).collect(Collectors.toList());
     }
 
     private UserDto checkingUserId(Long userId) {

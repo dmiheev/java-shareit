@@ -40,4 +40,10 @@ public class ErrorHandler {
     public Map<String, String> handleUnsupportedStateException(UnsupportedStatusException e) {
         return Map.of("error", "Unknown state: " + e.getMessage());
     }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public String handleRuntimeException(RuntimeException e) {
+        return String.format(e.getMessage());
+    }
 }

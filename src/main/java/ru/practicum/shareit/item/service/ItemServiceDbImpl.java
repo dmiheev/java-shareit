@@ -2,7 +2,6 @@ package ru.practicum.shareit.item.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.booking.dto.BookingDto;
@@ -25,15 +24,13 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static ru.practicum.shareit.item.dto.mapper.CommentMapper.toCommentDto;
+import static ru.practicum.shareit.item.dto.mapper.CommentMapper.*;
 import static ru.practicum.shareit.item.dto.mapper.ItemMapper.*;
-import static ru.practicum.shareit.user.dto.mapper.UserMapper.toUser;
-import static ru.practicum.shareit.user.dto.mapper.UserMapper.toUserDto;
+import static ru.practicum.shareit.user.dto.mapper.UserMapper.*;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
-@Primary
 public class ItemServiceDbImpl implements ItemService {
 
     private final UserRepository userRepository;

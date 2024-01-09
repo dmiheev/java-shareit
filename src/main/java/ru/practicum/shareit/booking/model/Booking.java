@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.model.User;
+import ru.practicum.shareit.utils.Constant;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -23,10 +24,10 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "start_date")
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    @JsonFormat(pattern = Constant.DATE_FORMAT)
     private LocalDateTime start;
     @Column(name = "end_date")
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    @JsonFormat(pattern = Constant.DATE_FORMAT)
     private LocalDateTime end;
     @ManyToOne
     @JoinColumn(name = "item_id")

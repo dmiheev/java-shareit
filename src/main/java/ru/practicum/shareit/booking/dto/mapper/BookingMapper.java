@@ -1,5 +1,6 @@
 package ru.practicum.shareit.booking.dto.mapper;
 
+import lombok.experimental.UtilityClass;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.BookingLiteDto;
 import ru.practicum.shareit.booking.model.Booking;
@@ -8,14 +9,13 @@ import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.model.User;
 
-import static ru.practicum.shareit.item.dto.mapper.ItemMapper.toItem;
-import static ru.practicum.shareit.item.dto.mapper.ItemMapper.toItemDto;
-import static ru.practicum.shareit.user.dto.mapper.UserMapper.toUser;
-import static ru.practicum.shareit.user.dto.mapper.UserMapper.toUserDto;
+import static ru.practicum.shareit.item.dto.mapper.ItemMapper.*;
+import static ru.practicum.shareit.user.dto.mapper.UserMapper.*;
 
+@UtilityClass
 public class BookingMapper {
 
-    public static BookingDto toBookingDto(Booking booking) {
+    public BookingDto toBookingDto(Booking booking) {
         BookingDto bookingDto = BookingDto.builder()
                 .id(booking.getId())
                 .start(booking.getStart())
@@ -34,7 +34,7 @@ public class BookingMapper {
         return bookingDto;
     }
 
-    public static Booking toBookingDb(BookingDto bookingDto, Item item, User booker) {
+    public Booking toBookingDb(BookingDto bookingDto, Item item, User booker) {
         return Booking.builder()
                 .id(bookingDto.getId() != null ? bookingDto.getId() : 0L)
                 .start(bookingDto.getStart())
@@ -45,7 +45,7 @@ public class BookingMapper {
                 .build();
     }
 
-    public static Booking toBookingUpdate(BookingDto bookingDto, Booking booking) {
+    public Booking toBookingUpdate(BookingDto bookingDto, Booking booking) {
         Booking bookingUpdate = Booking.builder()
                 .id(booking.getId())
                 .start(booking.getStart())
@@ -64,7 +64,7 @@ public class BookingMapper {
         return bookingUpdate;
     }
 
-    public static BookingLiteDto toBookingLiteDto(BookingDto bookingDto) {
+    public BookingLiteDto toBookingLiteDto(BookingDto bookingDto) {
         if (bookingDto == null) {
             return null;
         }

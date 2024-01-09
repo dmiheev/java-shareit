@@ -1,7 +1,6 @@
 package ru.practicum.shareit.item.dto.mapper;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import lombok.experimental.UtilityClass;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.model.BookingStatus;
 import ru.practicum.shareit.item.dto.CommentDto;
@@ -14,14 +13,13 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import static ru.practicum.shareit.booking.dto.mapper.BookingMapper.toBookingLiteDto;
+import static ru.practicum.shareit.booking.dto.mapper.BookingMapper.*;
 
 
-@Component
-@RequiredArgsConstructor
+@UtilityClass
 public class ItemMapper {
 
-    public static ItemDto toItemDto(Item item) {
+    public ItemDto toItemDto(Item item) {
         return ItemDto.builder()
                 .id(item.getId())
                 .name(item.getName())
@@ -32,7 +30,7 @@ public class ItemMapper {
                 .build();
     }
 
-    public static Item toItem(ItemDto itemDto) {
+    public Item toItem(ItemDto itemDto) {
         return Item.builder()
                 .id(itemDto.getId() != null ? itemDto.getId() : 0)
                 .name(itemDto.getName())
@@ -41,7 +39,7 @@ public class ItemMapper {
                 .build();
     }
 
-    public static Item toItemDb(ItemDto itemDto, User user) {
+    public Item toItemDb(ItemDto itemDto, User user) {
         return Item.builder()
                 .id(itemDto.getId() != null ? itemDto.getId() : 0)
                 .name(itemDto.getName())
@@ -51,7 +49,7 @@ public class ItemMapper {
                 .build();
     }
 
-    public static ItemDto toItemDtoWithBookings(Item item, List<BookingDto> bookings) {
+    public ItemDto toItemDtoWithBookings(Item item, List<BookingDto> bookings) {
         BookingDto lastBooking = null;
         BookingDto nextBooking = null;
         if (!bookings.isEmpty()) {
@@ -77,7 +75,7 @@ public class ItemMapper {
                 .build();
     }
 
-    public static ItemDto toItemDtoWithBookingsAndComments(Item item, List<BookingDto> bookings, List<CommentDto> comments) {
+    public ItemDto toItemDtoWithBookingsAndComments(Item item, List<BookingDto> bookings, List<CommentDto> comments) {
         ItemDto itemDto = null;
         if (bookings == null) {
             itemDto = toItemDto(item);
@@ -88,7 +86,7 @@ public class ItemMapper {
         return itemDto;
     }
 
-    public static ItemDto toItemDtoWithComments(Item item, List<CommentDto> comments) {
+    public ItemDto toItemDtoWithComments(Item item, List<CommentDto> comments) {
         ItemDto itemDto = toItemDto(item);
         itemDto.setComments(comments);
         return itemDto;

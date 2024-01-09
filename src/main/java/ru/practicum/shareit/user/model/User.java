@@ -1,11 +1,9 @@
 package ru.practicum.shareit.user.model;
 
 import lombok.*;
-import ru.practicum.shareit.booking.model.Booking;
-import ru.practicum.shareit.item.model.Item;
 
 import javax.persistence.*;
-import java.util.List;
+import javax.validation.constraints.Email;
 import java.util.Objects;
 
 @Getter
@@ -22,11 +20,9 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    @Column(unique = true)
+    @Email
     private String email;
-    @OneToMany(mappedBy = "owner")
-    List<Item> items;
-    @OneToMany(mappedBy = "booker", cascade = CascadeType.ALL)
-    private List<Booking> bookings;
 
     @Override
     public boolean equals(Object o) {

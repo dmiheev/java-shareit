@@ -1,5 +1,7 @@
 package ru.practicum.shareit.booking.model;
 
+import ru.practicum.shareit.exception.UnsupportedStatusException;
+
 public enum BookingState {
 
     WAITING,
@@ -7,5 +9,13 @@ public enum BookingState {
     CURRENT,
     FUTURE,
     PAST,
-    ALL
+    ALL;
+
+    public static BookingState getEnumValue(String state) {
+        try {
+            return BookingState.valueOf(state);
+        } catch (Exception e) {
+            throw new UnsupportedStatusException("Unknown state: " + state);
+        }
+    }
 }
