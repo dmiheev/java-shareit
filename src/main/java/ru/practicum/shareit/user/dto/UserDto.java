@@ -9,7 +9,7 @@ import javax.validation.constraints.Email;
 @Data
 public class UserDto {
 
-    private long id;
+    private Long id;
     private String name;
     @Email(message = "Wrong email")
     private String email;
