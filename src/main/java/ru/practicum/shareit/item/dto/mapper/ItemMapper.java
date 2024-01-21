@@ -1,11 +1,13 @@
 package ru.practicum.shareit.item.dto.mapper;
 
-import lombok.experimental.UtilityClass;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.model.BookingStatus;
-import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.dto.comment.CommentDto;
 import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.request.model.ItemRequest;
 import ru.practicum.shareit.user.model.User;
 
 import java.time.LocalDateTime;
@@ -13,13 +15,13 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import static ru.practicum.shareit.booking.dto.mapper.BookingMapper.*;
+import static ru.practicum.shareit.booking.dto.mapper.BookingMapper.toBookingLiteDto;
 
-
-@UtilityClass
+@Component
+@RequiredArgsConstructor
 public class ItemMapper {
 
-    public ItemDto toItemDto(Item item) {
+    public static ItemDto toItemDto(Item item) {
         return ItemDto.builder()
                 .id(item.getId())
                 .name(item.getName())
@@ -30,7 +32,19 @@ public class ItemMapper {
                 .build();
     }
 
-    public Item toItem(ItemDto itemDto) {
+    public static ItemDto toItemDtoWithRequestId(Item item) {
+        return ItemDto.builder()
+                .id(item.getId())
+                .name(item.getName())
+                .description(item.getDescription())
+                .available(item.getAvailable())
+                .ownerId(item.ownerId() != null ? item.ownerId() : null)
+                .comments(new ArrayList<>())
+                .requestId(item.getRequest().getId())
+                .build();
+    }
+
+    public static Item toItem(ItemDto itemDto) {
         return Item.builder()
                 .id(itemDto.getId() != null ? itemDto.getId() : 0)
                 .name(itemDto.getName())
@@ -39,7 +53,7 @@ public class ItemMapper {
                 .build();
     }
 
-    public Item toItemDb(ItemDto itemDto, User user) {
+    public static Item toItemDb(ItemDto itemDto, User user) {
         return Item.builder()
                 .id(itemDto.getId() != null ? itemDto.getId() : 0)
                 .name(itemDto.getName())
@@ -49,7 +63,28 @@ public class ItemMapper {
                 .build();
     }
 
-    public ItemDto toItemDtoWithBookings(Item item, List<BookingDto> bookings) {
+    public static Item toItemDbWithRequest(ItemDto itemDto, User user, ItemRequest request) {
+        return Item.builder()
+                .id(itemDto.getId() != null ? itemDto.getId() : 0)
+                .name(itemDto.getName())
+                .description(itemDto.getDescription())
+                .available(itemDto.getAvailable())
+                .owner(user)
+                .request(request)
+                .build();
+    }
+
+    public static Item toItemUpdate(ItemDto itemDto, Item item) {
+        return Item.builder()
+                .id(itemDto.getId())
+                .name(itemDto.getName() != null ? itemDto.getName() : item.getName())
+                .description(itemDto.getDescription() != null ? itemDto.getDescription() : item.getDescription())
+                .available(itemDto.getAvailable() != null ? itemDto.getAvailable() : item.getAvailable())
+                .owner(item.getOwner())
+                .build();
+    }
+
+    public static ItemDto toItemDtoWithBookings(Item item, List<BookingDto> bookings) {
         BookingDto lastBooking = null;
         BookingDto nextBooking = null;
         if (!bookings.isEmpty()) {
@@ -75,8 +110,9 @@ public class ItemMapper {
                 .build();
     }
 
-    public ItemDto toItemDtoWithBookingsAndComments(Item item, List<BookingDto> bookings, List<CommentDto> comments) {
-        ItemDto itemDto = null;
+
+    public static ItemDto toItemDtoWithBookingsAndComments(Item item, List<BookingDto> bookings, List<CommentDto> comments) {
+        ItemDto itemDto;
         if (bookings == null) {
             itemDto = toItemDto(item);
         } else {
@@ -86,7 +122,7 @@ public class ItemMapper {
         return itemDto;
     }
 
-    public ItemDto toItemDtoWithComments(Item item, List<CommentDto> comments) {
+    public static ItemDto toItemDtoWithComments(Item item, List<CommentDto> comments) {
         ItemDto itemDto = toItemDto(item);
         itemDto.setComments(comments);
         return itemDto;

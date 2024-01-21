@@ -1,7 +1,7 @@
-package ru.practicum.shareit.item.model;
+package ru.practicum.shareit.item.model.comment;
 
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
+import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.model.User;
 
 import javax.persistence.*;
@@ -20,16 +20,15 @@ public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String text;
-    @ManyToOne
+    Long id;
+    String text;
+    @OneToOne
     @JoinColumn(name = "author_id")
-    private User author;
+    User author;
     @ManyToOne
     @JoinColumn(name = "item_id")
-    private Item item;
-    @CreationTimestamp
-    private LocalDateTime created;
+    Item item;
+    LocalDateTime created;
 
     public Long itemId() {
         return item != null ? item.getId() : null;

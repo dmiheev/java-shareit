@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.Map;
 
-
 @RestControllerAdvice()
 public class ErrorHandler {
 
@@ -20,14 +19,8 @@ public class ErrorHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.CONFLICT)
-    public String handleEmailAlreadyExistsException(EmailAlreadyRegisteredException e) {
+    public String handleEmailAlreadyExistsException(EmailIsAlreadyRegisteredException e) {
         return String.format("Email is already registered %s", e.getMessage());
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
-        return String.format("Method Argument Not Valid Exception: %s", e.getMessage());
     }
 
     @ExceptionHandler
@@ -44,8 +37,14 @@ public class ErrorHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Map<String, String> handleUnsupportedStateException(UnsupportedStatusException e) {
-        return Map.of("error", "Unknown state: " + e.getMessage());
+    public Map<String,String> handleUnsupportedStateException(UnsupportedStatusException e) {
+        return Map.of("error",  "Unknown state: " + e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        return String.format("Method Argument Not Valid Exception: %s", e.getMessage());
     }
 
     @ExceptionHandler
@@ -53,4 +52,5 @@ public class ErrorHandler {
     public String handleRuntimeException(Throwable e) {
         return String.format(e.getMessage());
     }
+
 }
