@@ -16,7 +16,6 @@ import ru.practicum.shareit.validator.UserValidator;
 import java.util.Collection;
 import java.util.Collections;
 
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
@@ -27,13 +26,13 @@ import static ru.practicum.shareit.user.dto.mapper.UserMapper.toUserDto;
 class UserServiceDbImplTest {
 
     @Mock
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Mock
-    UserValidator userValidator;
+    private UserValidator userValidator;
 
     @InjectMocks
-    UserServiceDbImpl userService;
+    private UserServiceDbImpl userService;
 
 
     @Test

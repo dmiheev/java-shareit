@@ -23,10 +23,10 @@ import static org.mockito.Mockito.when;
 class ItemValidatorTest {
 
     @Mock
-    ItemRepository repository;
+    private ItemRepository repository;
 
     @InjectMocks
-    ItemValidator itemValidator;
+    private ItemValidator itemValidator;
 
 
     @Test

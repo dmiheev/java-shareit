@@ -25,10 +25,10 @@ class ItemRequestRepositoryTest {
     private Long userOneId;
 
     @Autowired
-    ItemRequestRepository itemRequestRepository;
+    private ItemRequestRepository itemRequestRepository;
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @BeforeEach
     public void addRequests() {

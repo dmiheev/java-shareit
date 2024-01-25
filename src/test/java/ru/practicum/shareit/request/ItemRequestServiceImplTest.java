@@ -22,7 +22,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 import static ru.practicum.shareit.request.dto.mapper.ItemRequestMapper.toItemRequestDto;
@@ -31,16 +32,16 @@ import static ru.practicum.shareit.request.dto.mapper.ItemRequestMapper.toItemRe
 class ItemRequestServiceImplTest {
 
     @Mock
-    ItemRequestRepository itemRequestRepository;
+    private ItemRequestRepository itemRequestRepository;
 
     @Mock
-    UserValidator userValidator;
+    private UserValidator userValidator;
 
     @Mock
-    ItemRequestValidator itemRequestValidator;
+    private ItemRequestValidator itemRequestValidator;
 
     @InjectMocks
-    ItemRequestServiceImpl requestService;
+    private ItemRequestServiceImpl requestService;
 
     @Test
     void addNewRequest_whenUserExists_thenReturnItemRequestDto() {

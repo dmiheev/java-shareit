@@ -13,27 +13,27 @@ import ru.practicum.shareit.request.dto.ItemRequestDto;
 import ru.practicum.shareit.request.service.ItemRequestService;
 import ru.practicum.shareit.validator.PageableValidator;
 
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 class ItemRequestControllerTest {
 
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
     @Autowired
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
 
     @MockBean
-    ItemRequestService itemRequestService;
+    private ItemRequestService itemRequestService;
 
     @MockBean
-    PageableValidator pageableValidator;
+    private PageableValidator pageableValidator;
 
     @SneakyThrows
     @Test
@@ -67,8 +67,8 @@ class ItemRequestControllerTest {
         doNothing().when(pageableValidator).checkingPageableParams(anyInt(), anyInt());
 
         mockMvc.perform(get("/requests/all")
-                    .param("from", "1")
-                    .param("size", "1"))
+                        .param("from", "1")
+                        .param("size", "1"))
                 .andExpect(status().isOk());
 
         verify(itemRequestService, times(1)).getAllRequestsToResponse(anyLong(), any(Pageable.class));

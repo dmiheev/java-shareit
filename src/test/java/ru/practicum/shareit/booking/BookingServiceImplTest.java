@@ -27,7 +27,8 @@ import ru.practicum.shareit.validator.UserValidator;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
@@ -44,22 +45,22 @@ class BookingServiceImplTest {
     private Booking booking;
 
     @Mock
-    ItemRepository itemRepository;
+    private ItemRepository itemRepository;
 
     @Mock
-    BookingRepository bookingRepository;
+    private BookingRepository bookingRepository;
 
     @Mock
-    UserValidator userValidator;
+    private UserValidator userValidator;
 
     @Mock
-    ItemValidator itemValidator;
+    private ItemValidator itemValidator;
 
     @Mock
-    BookingValidator bookingValidator;
+    private BookingValidator bookingValidator;
 
     @InjectMocks
-    BookingServiceImpl bookingService;
+    private BookingServiceImpl bookingService;
 
     @BeforeEach
     public void fillData() {

@@ -21,10 +21,10 @@ import static org.mockito.Mockito.when;
 class ItemRequestValidatorTest {
 
     @Mock
-    ItemRequestRepository itemRequestRepository;
+    private ItemRequestRepository itemRequestRepository;
 
     @InjectMocks
-    ItemRequestValidator itemRequestValidator;
+    private ItemRequestValidator itemRequestValidator;
 
     @Test
     void validateItemRequestId_whenRequestNotExists_thenThrowEntityNotFoundException() {

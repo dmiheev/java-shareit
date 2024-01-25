@@ -13,7 +13,8 @@ import ru.practicum.shareit.exception.UnsupportedStatusException;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
@@ -21,10 +22,10 @@ import static org.mockito.Mockito.when;
 class BookingValidatorTest {
 
     @Mock
-    BookingRepository bookingRepository;
+    private BookingRepository bookingRepository;
 
     @InjectMocks
-    BookingValidator bookingValidator;
+    private BookingValidator bookingValidator;
 
     @Test
     void validateBookingState_whenStateIsIncorrect_thenThrowUnsupportedStatusException() {
@@ -67,7 +68,7 @@ class BookingValidatorTest {
         Booking booking = new Booking();
         when(bookingRepository.findById(anyLong())).thenReturn(Optional.of(booking));
 
-        Booking actual =  bookingValidator.validateBookingIdAndReturns(1L);
+        Booking actual = bookingValidator.validateBookingIdAndReturns(1L);
 
         assertEquals(actual, booking);
     }

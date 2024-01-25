@@ -20,25 +20,25 @@ import ru.practicum.shareit.user.repository.UserRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataJpaTest
 @ActiveProfiles("test")
 class BookingRepositoryTest {
 
     private static final Pageable PAGE_FOR_BOOKINGS = PageRequest.of(0, 10, Sort.by("start").descending());
-    long bookerId;
-    long ownerId;
-    long itemId;
+    private long bookerId;
+    private long ownerId;
+    private long itemId;
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    BookingRepository bookingRepository;
+    private BookingRepository bookingRepository;
 
     @Autowired
-    ItemRepository itemRepository;
+    private ItemRepository itemRepository;
 
     @BeforeEach
     public void addRequests() {

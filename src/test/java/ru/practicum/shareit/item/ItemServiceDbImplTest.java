@@ -44,20 +44,19 @@ import static ru.practicum.shareit.item.dto.mapper.ItemMapper.toItemDtoWithReque
 class ItemServiceDbImplTest {
 
     @Mock
-    ItemRepository itemRepository;
+    private ItemRepository itemRepository;
     @Mock
-    BookingRepository bookingRepository;
+    private BookingRepository bookingRepository;
     @Mock
-    CommentRepository commentRepository;
+    private CommentRepository commentRepository;
     @Mock
-    ItemRequestRepository itemRequestRepository;
+    private ItemRequestRepository itemRequestRepository;
     @Mock
-    UserValidator userValidator;
+    private UserValidator userValidator;
     @Mock
-    ItemValidator itemValidator;
-
+    private ItemValidator itemValidator;
     @InjectMocks
-    ItemServiceDbImpl itemService;
+    private ItemServiceDbImpl itemService;
 
     @Test
     void create_whenAllDataIsCorrect_thenReturnItemWithoutRequest() {

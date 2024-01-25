@@ -24,16 +24,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class ItemControllerTest {
 
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
     @Autowired
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
 
     @MockBean
-    ItemService itemService;
+    private ItemService itemService;
 
     @MockBean
-    PageableValidator pageableValidator;
+    private PageableValidator pageableValidator;
 
     @SneakyThrows
     @Test

@@ -22,10 +22,10 @@ import static org.mockito.Mockito.when;
 class UserValidatorTest {
 
     @Mock
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @InjectMocks
-    UserValidator userValidator;
+    private UserValidator userValidator;
 
     @Test
     void validateUserId_whenUserNotExists_thenThrowEntityNotFoundException() {
