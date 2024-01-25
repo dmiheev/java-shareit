@@ -13,7 +13,6 @@ import java.util.Collection;
 
 @RestController
 @Slf4j
-@Validated
 @RequiredArgsConstructor
 @RequestMapping(path = "/users")
 public class UserController {

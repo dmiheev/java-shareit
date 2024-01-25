@@ -4,59 +4,67 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.service.BookingService;
 import ru.practicum.shareit.validator.PageableValidator;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 @RestController
 @RequestMapping(path = "/bookings")
 @Slf4j
+@Validated
 @RequiredArgsConstructor
 public class BookingController {
     private final BookingService bookingService;
-    private final PageableValidator pageableValidator;
 
     @PostMapping
-    public BookingDto createBooking(@RequestBody BookingDto bookingDto, HttpServletRequest request) {
+    public BookingDto createBooking(@RequestBody BookingDto bookingDto,
+                                    @RequestHeader("X-Sharer-User-Id") long userId) {
         log.info("Creating a booking : {}", bookingDto);
-        return bookingService.addBooking(bookingDto, (long)(request.getIntHeader("X-Sharer-User-Id")));
+        return bookingService.addBooking(bookingDto, userId);
     }
 
     @PatchMapping("/{bookingId}")
-    public BookingDto approveBooking(@PathVariable Long bookingId, @RequestParam String approved, HttpServletRequest request) {
+    public BookingDto approveBooking(@PathVariable Long bookingId,
+                                     @RequestParam String approved,
+                                     @RequestHeader("X-Sharer-User-Id") long userId) {
         log.info("Make approve status to booking: {}, status: {}", bookingId, approved);
-        return bookingService.approveBooking(bookingId, (long)(request.getIntHeader("X-Sharer-User-Id")), approved);
+        return bookingService.approveBooking(bookingId, userId, approved);
     }
 
     @GetMapping
     public List<BookingDto> getAllBookingsForUser(@RequestParam(defaultValue = "ALL") String state,
-                                                  @RequestParam(defaultValue = "0") Integer from,
-                                                  @RequestParam(defaultValue = "10") Integer size,
-                                                  HttpServletRequest request) {
-        pageableValidator.checkingPageableParams(from, size);
+                                                  @RequestParam(defaultValue = "0")
+                                                  @PositiveOrZero Integer from,
+                                                  @RequestParam(defaultValue = "10")
+                                                  @Positive Integer size,
+                                                  @RequestHeader("X-Sharer-User-Id") long userId) {
         log.info("Getting info by user bookings");
         Pageable page = PageRequest.of(from / size, size);
-        return bookingService.getAllBookingsByUserId((long) request.getIntHeader("X-Sharer-User-Id"), state, page);
+        return bookingService.getAllBookingsByUserId(userId, state, page);
     }
 
     @GetMapping("/owner")
     public List<BookingDto> getAllBookingsForOwner(@RequestParam(defaultValue = "ALL") String state,
-                                                   @RequestParam(defaultValue = "0") Integer from,
-                                                   @RequestParam(defaultValue = "10") Integer size,
-                                                   HttpServletRequest request) {
-        pageableValidator.checkingPageableParams(from, size);
+                                                   @RequestParam(defaultValue = "0")
+                                                   @PositiveOrZero Integer from,
+                                                   @RequestParam(defaultValue = "10")
+                                                   @Positive Integer size,
+                                                   @RequestHeader("X-Sharer-User-Id") long userId) {
         log.info("Getting info by owner bookings");
         Pageable page = PageRequest.of(from / size, size);
-        return bookingService.getAllBookingsByOwnerId((long) request.getIntHeader("X-Sharer-User-Id"), state, page);
+        return bookingService.getAllBookingsByOwnerId(userId, state, page);
     }
 
     @GetMapping("/{bookingId}")
-    public BookingDto getInfoForBooking(@PathVariable Long bookingId, HttpServletRequest request) {
+    public BookingDto getInfoForBooking(@PathVariable Long bookingId,
+                                        @RequestHeader("X-Sharer-User-Id") long userId) {
         log.info("Getting info for booking: {}", bookingId);
-        return bookingService.getBookingInfo(bookingId, (long) request.getIntHeader("X-Sharer-User-Id"));
+        return bookingService.getBookingInfo(bookingId, userId);
     }
 }

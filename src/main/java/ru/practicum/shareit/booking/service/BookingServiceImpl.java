@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.mapper.BookingMapper;
 import ru.practicum.shareit.booking.model.Booking;
+import ru.practicum.shareit.booking.model.BookingState;
 import ru.practicum.shareit.booking.model.BookingStatus;
 import ru.practicum.shareit.booking.repository.BookingRepository;
 import ru.practicum.shareit.exception.EntityNotFoundException;
@@ -18,7 +19,6 @@ import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.validator.BookingValidator;
 import ru.practicum.shareit.validator.ItemValidator;
 import ru.practicum.shareit.validator.UserValidator;
-
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -71,21 +71,21 @@ public class BookingServiceImpl implements BookingService {
             throw new EntityNotFoundException("User with id = " + ownerId + " is not an owner!");
         }
 
-        switch (approve.toLowerCase()) {
-            case "true": {
+        try {
+            boolean isApprove = Boolean.parseBoolean(approve.toLowerCase());
+
+            if (isApprove) {
                 if (bookingDto.getStatus().equals(BookingStatus.APPROVED)) {
                     throw new IncorrectDataException("Status is Approved");
                 }
                 bookingDto.setStatus(BookingStatus.APPROVED);
-                break;
-            }
-            case "false": {
+            } else {
                 bookingDto.setStatus(BookingStatus.REJECTED);
-                break;
             }
-            default:
-                throw new IncorrectDataException("Incorrect data in approve method");
+        } catch (Exception e) {
+            throw new IncorrectDataException("Incorrect data in approve method");
         }
+
         Booking bookingToUpdate = toBookingUpdate(bookingDto, bookingFromDb);
         bookingRepository.save(bookingToUpdate);
         return toBookingDto(bookingToUpdate);
@@ -108,28 +108,31 @@ public class BookingServiceImpl implements BookingService {
 
         Pageable pageForBookings = PageRequest.of(page.getPageNumber(), page.getPageSize(), SORT_BY_START_DESC);
         List<Booking> bookings;
-        switch (state.toUpperCase()) {
-            case "WAITING": {
+
+        BookingState bookingState = BookingState.getEnumValue(state.toUpperCase());
+
+        switch (bookingState) {
+            case WAITING: {
                 bookings = new ArrayList<>(bookingRepository.findAllByBookerIdAndWaitingStatus(userId, BookingStatus.WAITING, pageForBookings));
                 break;
             }
-            case "REJECTED": {
+            case REJECTED: {
                 bookings = new ArrayList<>(bookingRepository.findAllByBookerIdAndRejectedStatus(userId, List.of(BookingStatus.REJECTED, BookingStatus.CANCELED), pageForBookings));
                 break;
             }
-            case "CURRENT": {
+            case CURRENT: {
                 bookings = new ArrayList<>(bookingRepository.findAllByBookerIdAndCurrentStatus(userId, LocalDateTime.now(), pageForBookings));
                 break;
             }
-            case "FUTURE": {
+            case FUTURE: {
                 bookings = new ArrayList<>(bookingRepository.findAllByBookerIdAndFutureStatus(userId, LocalDateTime.now(), pageForBookings));
                 break;
             }
-            case "PAST": {
+            case PAST: {
                 bookings = new ArrayList<>(bookingRepository.findAllByBookerIdAndPastStatus(userId, LocalDateTime.now(), pageForBookings));
                 break;
             }
-            case "ALL": {
+            case ALL: {
                 bookings = new ArrayList<>(bookingRepository.findAllByBooker_Id(userId, pageForBookings));
                 break;
             }
