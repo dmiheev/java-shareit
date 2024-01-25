@@ -26,12 +26,6 @@ public class User {
     @Email
     private String email;
 
-    @OneToMany(mappedBy = "owner")
-    List<Item> items;
-
-    @OneToMany(mappedBy = "booker", cascade = CascadeType.ALL)
-    private List<Booking> bookings;
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

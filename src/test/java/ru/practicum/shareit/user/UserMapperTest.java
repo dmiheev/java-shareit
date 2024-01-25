@@ -22,19 +22,15 @@ class UserMapperTest {
                 .id(1L)
                 .name("name")
                 .email("mail@Mail.ru")
-                .bookings(new ArrayList<>())
-                .items(List.of(Item.builder().id(1L).build()))
                 .build();
-        User userFromConstructor = new User(1L, "name", "mail@mail.ru", List.of(new Item()), List.of(new Booking()));
+        User userFromConstructor = new User(1L, "name", "mail@mail.ru");
 
         UserDto userDto = UserMapper.toUserDto(user);
         UserDto userDtoConstructor = UserMapper.toUserDto(userFromConstructor);
 
         assertEquals(user.getId(), userDto.getId());
         assertEquals(user.getName(), userDto.getName());
-        assertEquals(user.getItems().size(), 1);
         assertEquals(userDtoConstructor.getName(), userFromConstructor.getName());
-        assertEquals(userFromConstructor.getBookings().size(), 1);
     }
 
     @Test
@@ -49,7 +45,6 @@ class UserMapperTest {
         assertEquals(userDto.getId(), user.getId());
         assertEquals(userDto.getName(), user.getName());
         assertEquals(userDto.getEmail(), user.getEmail());
-        assertNull(user.getItems());
     }
 
     @Test

@@ -67,8 +67,6 @@ class BookingServiceImplTest {
                 .id(1L)
                 .name("name")
                 .email("email@mai.ru")
-                .bookings(List.of(new Booking()))
-                .items(List.of(new Item()))
                 .build();
 
         ownerItem = Item.builder()
