@@ -14,7 +14,8 @@ import ru.practicum.shareit.user.repository.UserRepository;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
@@ -51,7 +52,7 @@ class UserValidatorTest {
         User user = new User();
         when(userRepository.findById(anyLong())).thenReturn(Optional.of(user));
 
-        User actual =  userValidator.validateUserIdAndReturn(1L);
+        User actual = userValidator.validateUserIdAndReturn(1L);
 
         assertEquals(actual, user);
     }

@@ -3,7 +3,8 @@ package ru.practicum.shareit.validator;
 import org.junit.jupiter.api.Test;
 import ru.practicum.shareit.exception.IncorrectDataException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class PageableValidatorTest {
 

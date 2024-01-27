@@ -43,6 +43,7 @@ class ItemRequestControllerTest {
 
         String result = mockMvc.perform(post("/requests")
                         .content(objectMapper.writeValueAsString(itemRequestToCreate))
+                        .header("X-Sharer-User-Id", "1")
                         .contentType("application/json"))
                 .andExpect(status().isOk())
                 .andReturn()
@@ -55,7 +56,7 @@ class ItemRequestControllerTest {
     @SneakyThrows
     @Test
     void getAllUserItemsWithResponses() {
-        mockMvc.perform(get("/requests"))
+        mockMvc.perform(get("/requests").header("X-Sharer-User-Id", "1"))
                 .andExpect(status().isOk());
 
         verify(itemRequestService, times(1)).getAllUserRequestsWithResponses(anyLong());
@@ -68,6 +69,7 @@ class ItemRequestControllerTest {
 
         mockMvc.perform(get("/requests/all")
                         .param("from", "1")
+                        .header("X-Sharer-User-Id", "1")
                         .param("size", "1"))
                 .andExpect(status().isOk());
 
@@ -78,7 +80,7 @@ class ItemRequestControllerTest {
     @Test
     void getRequestById() {
         long requestId = 0L;
-        mockMvc.perform(get("/requests/{requestId}", requestId))
+        mockMvc.perform(get("/requests/{requestId}", requestId).header("X-Sharer-User-Id", "1"))
                 .andExpect(status().isOk());
 
         verify(itemRequestService, times(1)).getRequestById(anyLong(), anyLong());

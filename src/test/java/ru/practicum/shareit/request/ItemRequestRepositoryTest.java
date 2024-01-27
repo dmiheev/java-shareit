@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataJpaTest
 @ActiveProfiles("test")
@@ -40,10 +40,10 @@ class ItemRequestRepositoryTest {
         userOneId = userOne.getId();
 
         itemRequestRepository.save(ItemRequest.builder()
-                        .creationDate(LocalDateTime.now())
-                        .requester(userOne)
-                        .description("text")
-                        .build());
+                .creationDate(LocalDateTime.now())
+                .requester(userOne)
+                .description("text")
+                .build());
         User userTwo = User.builder()
                 .email("mail2@mail.ru")
                 .name("name2")
@@ -69,7 +69,7 @@ class ItemRequestRepositoryTest {
     @Test
     void findAllByAllOtherUsers_whenUserIdIsUserOneId_thenReturnListOfUserTwoRequest() {
         Pageable page = PageRequest.of(0, 10);
-        List<ItemRequest> requestList = new ArrayList<>(itemRequestRepository.findAllByAllOtherUsers(userOneId,page));
+        List<ItemRequest> requestList = new ArrayList<>(itemRequestRepository.findAllByAllOtherUsers(userOneId, page));
 
         assertEquals(requestList.size(), 1);
         assertEquals(requestList.get(0).getRequester().getName(), "name2");

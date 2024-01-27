@@ -17,7 +17,7 @@ import ru.practicum.shareit.validator.PageableValidator;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -42,8 +42,9 @@ class ItemControllerTest {
         when(itemService.create(any(ItemDto.class), anyLong())).thenReturn(itemToCreate);
 
         String result = mockMvc.perform(post("/items")
-                    .contentType("application/json")
-                    .content(objectMapper.writeValueAsString(itemToCreate)))
+                        .contentType("application/json")
+                        .header("X-Sharer-User-Id", "1")
+                        .content(objectMapper.writeValueAsString(itemToCreate)))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
@@ -66,6 +67,7 @@ class ItemControllerTest {
 
         String result = mockMvc.perform(patch("/items/{itemId}", itemToCreate.getId())
                         .contentType("application/json")
+                        .header("X-Sharer-User-Id", "1")
                         .content(objectMapper.writeValueAsString(itemToCreate)))
                 .andExpect(status().isOk())
                 .andReturn()
@@ -79,7 +81,7 @@ class ItemControllerTest {
     @Test
     void getItemById() {
         long itemId = 0L;
-        mockMvc.perform(get("/items/{itemId}", itemId))
+        mockMvc.perform(get("/items/{itemId}", itemId).header("X-Sharer-User-Id", "1"))
                 .andExpect(status().isOk());
 
         verify(itemService, times(1)).getItemById(anyLong(), anyLong());

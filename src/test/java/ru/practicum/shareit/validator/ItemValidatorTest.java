@@ -15,7 +15,8 @@ import ru.practicum.shareit.item.repository.ItemRepository;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
@@ -52,7 +53,7 @@ class ItemValidatorTest {
         Item item = new Item();
         when(repository.findById(anyLong())).thenReturn(Optional.of(item));
 
-        Item actual =  itemValidator.validateItemIdAndReturns(1L);
+        Item actual = itemValidator.validateItemIdAndReturns(1L);
 
         assertEquals(actual, item);
     }

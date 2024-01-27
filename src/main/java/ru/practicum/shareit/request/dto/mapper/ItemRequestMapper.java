@@ -3,13 +3,15 @@ package ru.practicum.shareit.request.dto.mapper;
 
 import ru.practicum.shareit.item.dto.RequestItemDto;
 import ru.practicum.shareit.item.model.Item;
-import ru.practicum.shareit.request.model.ItemRequest;
 import ru.practicum.shareit.request.dto.ItemRequestDto;
+import ru.practicum.shareit.request.model.ItemRequest;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.model.User;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 import static ru.practicum.shareit.user.dto.mapper.UserMapper.toUserDto;
 
@@ -23,19 +25,19 @@ public class ItemRequestMapper {
                 .build();
     }
 
-    public static ItemRequestDto toItemRequestDto(ItemRequest itemRequest) {
-        List<RequestItemDto> items = null;
-        if (itemRequest.getResponsesToRequest() != null) {
-            items = itemRequest.getResponsesToRequest().stream()
-                    .map(ItemRequestMapper::makeResultItemDto)
-                    .collect(Collectors.toList());
-        }
+    public static ItemRequestDto toItemRequestDto(ItemRequest itemRequest, List<Item> items) {
+
+        Collection<RequestItemDto> requestItem = new ArrayList<>();
+
+        items.forEach(item -> {
+            requestItem.add(toItemRequest(item));
+        });
 
         ItemRequestDto requestDto = ItemRequestDto.builder()
                 .id(itemRequest.getId())
                 .description(itemRequest.getDescription())
                 .created(itemRequest.getCreationDate())
-                .items(items)
+                .items(requestItem)
                 .build();
 
         if (itemRequest.getRequester() != null) {
@@ -55,5 +57,40 @@ public class ItemRequestMapper {
                 .description(item.getDescription())
                 .available(item.getAvailable())
                 .build();
+    }
+
+    public static RequestItemDto toItemRequest(Item item) {
+        return RequestItemDto.builder()
+                .id(item.getId())
+                .name(item.getName())
+                .description(item.getDescription())
+                .ownerId(item.getOwner().getId())
+                .available(item.getAvailable())
+                .requestId(item.getRequest().getId())
+                .build();
+    }
+
+    public static List<ItemRequestDto> toItemRequestListDto(List<ItemRequest> requests,
+                                                            Map<Long, List<Item>> mapItems) {
+        List<ItemRequestDto> ir = new ArrayList<>();
+
+        requests.forEach(req -> {
+            List<Item> items = mapItems.get(req.getId());
+            if (items == null) {
+                items = new ArrayList<>();
+            }
+            Collection<RequestItemDto> requestItem = new ArrayList<>();
+            items.forEach(item -> requestItem.add(toItemRequest(item)));
+
+            ItemRequestDto requestDto = ItemRequestDto.builder()
+                    .id(req.getId())
+                    .description(req.getDescription())
+                    .created(req.getCreationDate())
+                    .items(requestItem)
+                    .build();
+            ir.add(requestDto);
+        });
+
+        return ir;
     }
 }

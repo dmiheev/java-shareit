@@ -24,16 +24,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class BookingControllerTest {
 
     @Autowired
-    private ObjectMapper objectMapper;
+    ObjectMapper objectMapper;
 
     @Autowired
-    private MockMvc mockMvc;
+    MockMvc mockMvc;
 
     @MockBean
-    private BookingService bookingService;
+    BookingService bookingService;
 
     @MockBean
-    private PageableValidator pageableValidator;
+    PageableValidator pageableValidator;
 
     @SneakyThrows
     @Test
@@ -43,6 +43,7 @@ class BookingControllerTest {
 
         String result = mockMvc.perform(post("/bookings")
                         .content(objectMapper.writeValueAsString(bookingToCreate))
+                        .header("X-Sharer-User-Id", "1")
                         .contentType("application/json"))
                 .andExpect(status().isOk())
                 .andReturn()
@@ -66,7 +67,8 @@ class BookingControllerTest {
         String result = mockMvc.perform(patch("/bookings/{bookingId}", bookingToCreate.getId())
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(bookingToCreate))
-                        .param("approved", "true"))
+                        .param("approved", "true")
+                        .header("X-Sharer-User-Id", "1"))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
@@ -107,7 +109,7 @@ class BookingControllerTest {
     @Test
     void getInfoForBooking() {
         long bookingId = 0L;
-        mockMvc.perform(get("/bookings/{bookingId}", bookingId))
+        mockMvc.perform(get("/bookings/{bookingId}", bookingId).header("X-Sharer-User-Id", "1"))
                 .andExpect(status().isOk());
 
         verify(bookingService, times(1)).getBookingInfo(anyLong(), anyLong());

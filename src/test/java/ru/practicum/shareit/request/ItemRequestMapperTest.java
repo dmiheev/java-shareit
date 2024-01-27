@@ -9,9 +9,10 @@ import ru.practicum.shareit.request.model.ItemRequest;
 import ru.practicum.shareit.user.model.User;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ItemRequestMapperTest {
 
@@ -54,10 +55,12 @@ class ItemRequestMapperTest {
                 .requester(owner)
                 .id(1L)
                 .description("desc")
-                .responsesToRequest(List.of(item))
                 .build();
 
-        ItemRequestDto actual = ItemRequestMapper.toItemRequestDto(request);
+        List<Item> items = new ArrayList<>();
+        items.add(item);
+
+        ItemRequestDto actual = ItemRequestMapper.toItemRequestDto(request, items);
 
         assertEquals(actual.getDescription(), request.getDescription());
         assertEquals(actual.getItems().size(), 1);

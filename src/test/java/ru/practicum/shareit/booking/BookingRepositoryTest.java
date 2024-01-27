@@ -152,6 +152,7 @@ class BookingRepositoryTest {
         List<Booking> ownerBookings = bookingRepository.findAllByUserIdAndItemIdAndEndDateIsPassed(bookerId, itemId, LocalDateTime.now());
 
         assertEquals(ownerBookings.size(), 1);
+        assertEquals(ownerBookings.get(0).getItem().getName(), "item1");
     }
 
     @Test

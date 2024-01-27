@@ -16,7 +16,7 @@ public class UserValidator {
 
     private final UserRepository repository;
 
-    public  void validateUserId(long userId) {
+    public void validateUserId(long userId) {
         if (userId == -1) {
             throw new IncorrectDataException("There is no user with header-Id : " + userId);
         }
@@ -24,15 +24,15 @@ public class UserValidator {
                 .orElseThrow(() -> new EntityNotFoundException("There is no user : " + userId));
     }
 
-    public  User validateUserIdAndReturn(long userId) {
+    public User validateUserIdAndReturn(long userId) {
         if (userId == -1) {
             throw new IncorrectDataException("There is no user with header-Id : " + userId);
         }
-        return  repository.findById(userId)
+        return repository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("There is no user : " + userId));
     }
 
-    public  void validateUserData(UserDto userDto) {
+    public void validateUserData(UserDto userDto) {
         if (userDto.getEmail() == null || userDto.getEmail().isEmpty()) {
             throw new EmptyFieldException("User's email is empty");
         }

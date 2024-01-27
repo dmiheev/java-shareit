@@ -14,7 +14,7 @@ import ru.practicum.shareit.user.service.UserService;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -55,8 +55,8 @@ public class UserControllerTest {
         when(userService.create(userToCreate)).thenReturn(userToCreate);
 
         String result = mockMvc.perform(post("/users")
-                    .contentType("application/json")
-                    .content(objectMapper.writeValueAsString(userToCreate)))
+                        .contentType("application/json")
+                        .content(objectMapper.writeValueAsString(userToCreate)))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()

@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import ru.practicum.shareit.booking.dto.BookingLiteDto;
 import ru.practicum.shareit.item.dto.comment.CommentDto;
 import ru.practicum.shareit.request.dto.ItemRequestDto;
-import ru.practicum.shareit.request.model.ItemRequest;
 
 import java.util.List;
 

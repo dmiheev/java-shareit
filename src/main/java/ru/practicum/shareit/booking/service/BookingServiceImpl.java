@@ -71,9 +71,8 @@ public class BookingServiceImpl implements BookingService {
             throw new EntityNotFoundException("User with id = " + ownerId + " is not an owner!");
         }
 
-        try {
+        if (approve.equalsIgnoreCase("true") || approve.equalsIgnoreCase("false")) {
             boolean isApprove = Boolean.parseBoolean(approve.toLowerCase());
-
             if (isApprove) {
                 if (bookingDto.getStatus().equals(BookingStatus.APPROVED)) {
                     throw new IncorrectDataException("Status is Approved");
@@ -82,7 +81,7 @@ public class BookingServiceImpl implements BookingService {
             } else {
                 bookingDto.setStatus(BookingStatus.REJECTED);
             }
-        } catch (Exception e) {
+        } else {
             throw new IncorrectDataException("Incorrect data in approve method");
         }
 

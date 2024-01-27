@@ -10,7 +10,6 @@ import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.mapper.BookingMapper;
 import ru.practicum.shareit.booking.repository.BookingRepository;
 import ru.practicum.shareit.exception.EntityNotFoundException;
-
 import ru.practicum.shareit.exception.IncorrectDataException;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.comment.CommentDto;
@@ -31,7 +30,6 @@ import java.util.stream.Collectors;
 
 import static ru.practicum.shareit.item.dto.comment.CommentMapper.toCommentDto;
 import static ru.practicum.shareit.item.dto.mapper.ItemMapper.*;
-import static ru.practicum.shareit.item.dto.mapper.ItemMapper.toItemDto;
 
 @Service
 @Slf4j
@@ -151,7 +149,7 @@ public class ItemServiceDbImpl implements ItemService {
 
     @Override
     public CommentDto addCommentToItem(Long userId, Long itemId, CommentDto commentDto) {
-      log.debug("Adding a comment to itemId: {} by userId {}", itemId, userId);
+        log.debug("Adding a comment to itemId: {} by userId {}", itemId, userId);
         User author = userValidator.validateUserIdAndReturn(userId);
         itemValidator.validateItemId(itemId);
         itemValidator.validateCommentData(commentDto);

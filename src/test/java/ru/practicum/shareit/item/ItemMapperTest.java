@@ -14,7 +14,7 @@ import ru.practicum.shareit.user.model.User;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ItemMapperTest {
 
@@ -131,7 +131,7 @@ class ItemMapperTest {
         ItemDto actual = ItemMapper.toItemDtoWithBookingsAndComments(item, List.of(bookingDto), List.of(commentDto));
 
         assertEquals(actual.getLastBooking().getStatus(), bookingDto.getStatus());
-        assertEquals(actual.getAvailable(),item.getAvailable());
+        assertEquals(actual.getAvailable(), item.getAvailable());
         assertEquals(actual.getComments().size(), 1);
     }
 
@@ -146,7 +146,7 @@ class ItemMapperTest {
 
         ItemDto actual = ItemMapper.toItemDtoWithComments(item, List.of(commentDto));
 
-        assertEquals(actual.getAvailable(),item.getAvailable());
+        assertEquals(actual.getAvailable(), item.getAvailable());
         assertEquals(actual.getComments().size(), 1);
     }
 }

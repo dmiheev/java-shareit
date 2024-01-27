@@ -13,7 +13,8 @@ import ru.practicum.shareit.request.repository.ItemRequestRepository;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
@@ -50,7 +51,7 @@ class ItemRequestValidatorTest {
         ItemRequest request = new ItemRequest();
         when(itemRequestRepository.findById(anyLong())).thenReturn(Optional.of(request));
 
-        ItemRequest actual =  itemRequestValidator.validateItemRequestIdAndReturns(1L);
+        ItemRequest actual = itemRequestValidator.validateItemRequestIdAndReturns(1L);
 
         assertEquals(actual, request);
     }
