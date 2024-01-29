@@ -12,7 +12,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.model.BookingStatus;
 import ru.practicum.shareit.booking.service.BookingService;
-import ru.practicum.shareit.validator.PageableValidator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -31,9 +30,6 @@ class BookingControllerTest {
 
     @MockBean
     BookingService bookingService;
-
-    @MockBean
-    PageableValidator pageableValidator;
 
     @SneakyThrows
     @Test
@@ -86,7 +82,6 @@ class BookingControllerTest {
                         .param("state", "ALL")
                         .header("X-Sharer-User-Id", "1"))
                 .andExpect(status().isOk());
-        doNothing().when(pageableValidator).checkingPageableParams(1, 1);
 
         verify(bookingService, times(1)).getAllBookingsByUserId(1L, "ALL", PageRequest.of(1, 1));
     }
@@ -100,7 +95,6 @@ class BookingControllerTest {
                         .param("state", "ALL")
                         .header("X-Sharer-User-Id", "1"))
                 .andExpect(status().isOk());
-        doNothing().when(pageableValidator).checkingPageableParams(1, 1);
 
         verify(bookingService, times(1)).getAllBookingsByOwnerId(1L, "ALL", PageRequest.of(1, 1));
     }

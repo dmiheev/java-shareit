@@ -11,7 +11,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.practicum.shareit.request.dto.ItemRequestDto;
 import ru.practicum.shareit.request.service.ItemRequestService;
-import ru.practicum.shareit.validator.PageableValidator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -31,9 +30,6 @@ class ItemRequestControllerTest {
 
     @MockBean
     private ItemRequestService itemRequestService;
-
-    @MockBean
-    private PageableValidator pageableValidator;
 
     @SneakyThrows
     @Test
@@ -65,7 +61,6 @@ class ItemRequestControllerTest {
     @SneakyThrows
     @Test
     void getAllCreatedRequests() {
-        doNothing().when(pageableValidator).checkingPageableParams(anyInt(), anyInt());
 
         mockMvc.perform(get("/requests/all")
                         .param("from", "1")

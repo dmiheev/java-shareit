@@ -154,28 +154,30 @@ public class BookingServiceImpl implements BookingService {
             throw new IncorrectDataException("This method only for users who have >1 items");
         }
         List<Booking> bookings;
-        switch (state.toUpperCase()) {
-            case "WAITING": {
+        BookingState bookingState = BookingState.getEnumValue(state.toUpperCase());
+
+        switch (bookingState) {
+            case WAITING: {
                 bookings = new ArrayList<>(bookingRepository.findAllByOwnerItemsAndWaitingStatus(userItemsIds, BookingStatus.WAITING, pageForBookings));
                 break;
             }
-            case "REJECTED": {
+            case REJECTED: {
                 bookings = new ArrayList<>(bookingRepository.findAllByOwnerItemsAndRejectedStatus(userItemsIds, List.of(BookingStatus.REJECTED, BookingStatus.CANCELED), pageForBookings));
                 break;
             }
-            case "CURRENT": {
+            case CURRENT: {
                 bookings = new ArrayList<>(bookingRepository.findAllByOwnerItemsAndCurrentStatus(userItemsIds, LocalDateTime.now(), pageForBookings));
                 break;
             }
-            case "FUTURE": {
+            case FUTURE: {
                 bookings = new ArrayList<>(bookingRepository.findAllByOwnerItemsAndFutureStatus(userItemsIds, LocalDateTime.now(), pageForBookings));
                 break;
             }
-            case "PAST": {
+            case PAST: {
                 bookings = new ArrayList<>(bookingRepository.findAllByOwnerItemsAndPastStatus(userItemsIds, LocalDateTime.now(), pageForBookings));
                 break;
             }
-            case "ALL": {
+            case ALL: {
                 bookings = new ArrayList<>(bookingRepository.findAllByOwnerItems(userItemsIds, pageForBookings));
                 break;
             }

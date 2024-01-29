@@ -12,7 +12,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.comment.CommentDto;
 import ru.practicum.shareit.item.service.ItemService;
-import ru.practicum.shareit.validator.PageableValidator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -31,9 +30,6 @@ class ItemControllerTest {
 
     @MockBean
     private ItemService itemService;
-
-    @MockBean
-    private PageableValidator pageableValidator;
 
     @SneakyThrows
     @Test
@@ -95,7 +91,6 @@ class ItemControllerTest {
                         .param("size", "1")
                         .header("X-Sharer-User-Id", "1"))
                 .andExpect(status().isOk());
-        doNothing().when(pageableValidator).checkingPageableParams(anyInt(), anyInt());
 
         verify(itemService, times(1)).getItemsByUserId(anyLong(), any(Pageable.class));
 
@@ -109,7 +104,6 @@ class ItemControllerTest {
                         .param("from", "1")
                         .param("size", "1"))
                 .andExpect(status().isOk());
-        doNothing().when(pageableValidator).checkingPageableParams(anyInt(), anyInt());
 
         verify(itemService, times(1)).getItemsBySearch(anyString(), any(Pageable.class));
     }
