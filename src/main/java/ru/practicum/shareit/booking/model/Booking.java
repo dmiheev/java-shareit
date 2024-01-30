@@ -4,11 +4,12 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.model.User;
-import ru.practicum.shareit.utils.Constant;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
+
+import static ru.practicum.shareit.utils.Constant.DATE_FORMAT;
 
 @Getter
 @Setter
@@ -22,12 +23,12 @@ public class Booking {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
     @Column(name = "start_date")
-    @JsonFormat(pattern = Constant.DATE_FORMAT)
+    @JsonFormat(pattern = DATE_FORMAT)
     private LocalDateTime start;
     @Column(name = "end_date")
-    @JsonFormat(pattern = Constant.DATE_FORMAT)
+    @JsonFormat(pattern = DATE_FORMAT)
     private LocalDateTime end;
     @ManyToOne
     @JoinColumn(name = "item_id")
@@ -52,7 +53,7 @@ public class Booking {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Booking booking = (Booking) o;
-        return Objects.equals(id, booking.id);
+        return id == booking.id;
     }
 
     @Override

@@ -20,32 +20,32 @@ public class UserController {
 
     @GetMapping()
     public Collection<UserDto> getAllUsers() {
-        log.info("Getting all users");
+        log.debug("Getting all users");
         return userService.getAll();
     }
 
     @GetMapping("/{userId}")
     public UserDto getUserById(@PathVariable long userId) {
-        log.info("Getting user by id: {}", userId);
+        log.debug("Getting user by id: {}", userId);
         return userService.getById(userId);
     }
 
     @PostMapping()
     public UserDto createUser(@Valid @RequestBody UserDto userDto) {
-        log.info("Creating user: {}", userDto);
+        log.debug("Creating user: {}", userDto);
         return userService.create(userDto);
     }
 
     @PatchMapping("/{userId}")
     public UserDto updateUser(@PathVariable long userId, @Valid @RequestBody UserDto userDto) {
-        log.info("Updating user by id: {}", userId);
+        log.debug("Updating user by id: {}", userId);
         userDto.setId(userId);
         return userService.update(userDto);
     }
 
     @DeleteMapping("/{userId}")
     public void deleteUser(@PathVariable long userId) {
-        log.info("Deleting user by id : {}", userId);
+        log.debug("Deleting user by id : {}", userId);
         userService.delete(userId);
     }
 }

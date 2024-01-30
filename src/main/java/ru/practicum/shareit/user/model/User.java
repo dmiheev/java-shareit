@@ -3,6 +3,7 @@ package ru.practicum.shareit.user.model;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import java.util.Objects;
 
 @Getter
@@ -17,8 +18,9 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
     private String name;
+    @Email
     private String email;
 
     @Override
@@ -26,7 +28,7 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(id, user.id);
+        return id == user.id;
     }
 
     @Override
